@@ -15,7 +15,7 @@ com gráficos e insights focados no desempenho diário, mensal e por categoria d
 # --- Carregar o Dataset ---
 st.header("1. Carregando os Dados")
 
-csv_path = 'sample_data/sales_data.csv'  # Ajuste para caminhos locais ou onde você subir
+csv_path = 'sales_data.csv'  # Ajuste para caminhos locais ou onde você subir
 
 if os.path.exists(csv_path):
     df = pd.read_csv(csv_path)

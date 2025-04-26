@@ -34,22 +34,8 @@ if os.path.exists(csv_path):
     st.success(f"Total de registros: **{total_registros}**")
     st.success(f"Período coberto: **{data_inicial.date()} até {data_final.date()}**")
 
-    # --- Evolução de Vendas Diárias ---
-    st.header("3. Evolução das Vendas Diárias")
-
-    vendas_diarias = df.groupby('Date_Sold')['Total_Sales'].sum()
-
-    fig, ax = plt.subplots(figsize=(10,5))
-    sns.lineplot(x=vendas_diarias.index, y=vendas_diarias.values, color='orange', linewidth=2.5, ax=ax)
-    ax.set_title('Vendas Totais Diárias (Jan - início de Abr/2024)')
-    ax.set_xlabel('Data')
-    ax.set_ylabel('Vendas Diárias (R$)')
-    plt.xticks(rotation=45)
-    ax.grid(axis='y', linestyle='--', alpha=0.7)
-    st.pyplot(fig)
-
     # --- Comparação de Vendas Mensais ---
-    st.header("4. Comparação de Vendas Mensais (Jan, Fev, Mar)")
+    st.header("3. Comparação de Vendas Mensais (Jan, Fev, Mar)")
 
     df['Month'] = df['Date_Sold'].dt.to_period('M')
     vendas_mensais = df[df['Date_Sold'] < '2024-04-01'].groupby('Month')['Total_Sales'].sum()
@@ -73,7 +59,7 @@ if os.path.exists(csv_path):
     st.pyplot(fig2)
 
     # --- Análise de Vendas por Categoria ---
-    st.header("5. Análise de Vendas por Categoria")
+    st.header("4. Análise de Vendas por Categoria")
 
     vendas_cat_mensal = df[df['Date_Sold'] < '2024-04-01'].groupby(['Month','Category'])['Total_Sales'].sum().unstack(fill_value=0)
 
@@ -90,7 +76,7 @@ if os.path.exists(csv_path):
     st.pyplot(fig3)
 
     # --- Conclusão ---
-    st.header("6. Conclusão 📌")
+    st.header("5. Conclusão 📌")
     st.markdown("""
     - As vendas aumentaram mês a mês, com destaque para **março de 2024**, que superou todos os meses anteriores.
     - **Clothing** e **Grocery** foram as categorias que mais impulsionaram o crescimento no trimestre.

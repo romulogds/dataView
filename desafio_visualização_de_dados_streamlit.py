@@ -12,7 +12,6 @@ Original file is located at
 """
 
 # Importando bibliotecas.
-!pip install streamlit pandas matplotlib seaborn --quiet
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt

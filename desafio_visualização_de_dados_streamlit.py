@@ -11,7 +11,7 @@ Original file is located at
 **Aluno:** Romulo Galdino.
 """
 
-# Importando bibliotecas.
+# Importação de bibliotecas
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -26,18 +26,9 @@ com gráficos e insights focados no desempenho diário, mensal e por categoria d
 
 # --- Carregar o Dataset ---
 st.header("1. Carregando os Dados")
-df = pd.read_csv('/content/sample_data/sales_data.csv')  # ou ajuste o caminho conforme seu servidor local
+df = pd.read_csv('/content/sample_data/sales_data.csv')  # ajuste o caminho se necessário
 df.drop_duplicates(inplace=True)
 df['Date_Sold'] = pd.to_datetime(df['Date_Sold'])
-
-# Traduzir categorias para português
-categoria_map = {
-    "Clothing": "Vestuário",
-    "Electronics": "Eletrônicos",
-    "Grocery": "Alimentos",
-    "Toys": "Brinquedos"
-}
-df['Category'] = df['Category'].map(categoria_map)
 
 st.write("Primeiras linhas do dataset:")
 st.dataframe(df.head())
@@ -50,6 +41,20 @@ data_final = df['Date_Sold'].max()
 
 st.success(f"Total de registros: **{total_registros}**")
 st.success(f"Período coberto: **{data_inicial.date()} até {data_final.date()}**")
+
+# --- Evolução de Vendas Diárias ---
+st.header("3. Evolução das Vendas Diárias")
+
+vendas_diarias = df.groupby('Date_Sold')['Total_Sales'].sum()
+
+fig, ax = plt.subplots(figsize=(10,5))
+sns.lineplot(x=vendas_diarias.index, y=vendas_diarias.values, color='orange', linewidth=2.5, ax=ax)
+ax.set_title('Vendas Totais Diárias (Jan - início de Abr/2024)')
+ax.set_xlabel('Data')
+ax.set_ylabel('Vendas Diárias (R$)')
+plt.xticks(rotation=45)
+ax.grid(axis='y', linestyle='--', alpha=0.7)
+st.pyplot(fig)
 
 # --- Comparação de Vendas Mensais ---
 st.header("4. Comparação de Vendas Mensais (Jan, Fev, Mar)")
@@ -94,8 +99,7 @@ st.pyplot(fig3)
 
 # --- Conclusão ---
 st.header("6. Conclusão 📌")
-st.markdown("""
-- As vendas aumentaram mês a mês, com destaque para **março de 2024**, que superou todos os meses anteriores.
-- **Vestuário** e **Alimentos** foram as categorias que mais impulsionaram o crescimento no trimestre.
-- **Brinquedos** teve crescimento sólido, enquanto **Eletrônicos** caiu um pouco em março, indicando necessidade de monitoramento.
+st.markdown("""As vendas aumentaram mês a mês, com destaque para **março de 2024**, que superou todos os meses anteriores.
+- **Clothing** e **Grocery** foram as categorias que mais impulsionaram o crescimento no trimestre.
+- **Toys** teve crescimento sólido, enquanto **Electronics** caiu um pouco em março, indicando necessidade de monitoramento.
 """)
